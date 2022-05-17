@@ -2,6 +2,7 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html
+from dash import Dash, dash_table
 import pandas as pd
 import plotly.express as px
 from dash import html
@@ -11,11 +12,12 @@ from dash.dependencies import Input, Output, State
 import plotly.io as pio
 import numpy as np
 import smtplib,ssl
+from datetime import datetime as dt
+import json
 #import dash_auth
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SPACELAB])
-server=app.server
 app.config.suppress_callback_exceptions=True
 app.config.suppress_callback_exceptions=True
 #app login
@@ -121,7 +123,7 @@ A_table = dbc.Table.from_dataframe(results_a, striped=True, bordered=True, hover
 B_table = dbc.Table.from_dataframe(results_b, striped=True, bordered=True, hover=True, size="sm")
 PT_table = dbc.Table.from_dataframe(results_pt, striped=True, bordered=True, hover=True, size="sm")
 DS_table = dbc.Table.from_dataframe(results_ds, striped=True, bordered=True, hover=True, size="sm")
-CR_table = dbc.Table.from_dataframe(results_ds, striped=True, bordered=True, hover=True, size="sm")
+CR_table = dbc.Table.from_dataframe(results_ds, striped=True, bordered=True, hover=True, size="sm")				
 FR_table = dbc.Table.from_dataframe(results_ds, striped=True, bordered=True, hover=True, size="sm")
 
 ph_probe_header=[html.Thead([html.Td("Probe ID"), html.Td("Type"), html.Td("WI number"), html.Td("Location"), html.Td("Purchase Date"), html.Td("Installation Date"), html.Td("Calibration Date"), html.Td("Maintenance Notes")])]
@@ -168,6 +170,10 @@ currenthf = [3362]
 totalhf= currenthf-dffcumhf
 currentphos = [1660]
 totalphos= currentphos-dffcumphos
+
+dosend=dosing_data.tail(80)
+hfsum=(dosend.groupby(['Chemical']).sum().groupby(level=[0]).cumsum().reset_index())
+
 
 stock0 = dbc.Row([dbc.Col(html.H4(children="Chemical", style={'fontsize':20})), dbc.Col(html.H4(children="Storage Limit", style={'fontsize':20})), dbc.Col(html.H4(children="Current Monthly Usage", style={'fontsize':20})), dbc.Col(html.H4(children="Current Calculated Stock Level", style={'fontsize':20}))])
 stock1 = dbc.Row([dbc.Col(html.H4(children="Hydrogen Fluoride 50%", style={'fontSize':15})), dbc.Col(html.H4(children="3362 L (3 IBC's)", style={'fontSize':15})), dbc.Col(html.H4(children=dffcumhf, style={'fontSize':15})), dbc.Col(html.H4(children=totalhf, style={'fontSize':15}))])
@@ -230,6 +236,9 @@ aw_button=dbc.Button("Anglia Water Testing Procedure", href=aw_test_ref, color="
 ww_data_button=dbc.Button("Waste Water pH and Dosing Record", href=ww_data_logging, color="info")
 apanel_button=dbc.Button("Alarm Panel Record", href=apanel, color="info")
 
+#------total dosing----
+
+
 # ----------------images-----------------------
 encocam_file = 'tankimage.png'
 encoded_image = base64.b64encode(open(encocam_file, 'rb').read()).decode('ascii')
@@ -263,6 +272,8 @@ B_temp_average = dbc.Card([dbc.CardHeader("Target Value: 42 \u00B0C"), dbc.CardB
 # --- Dropdown graphs ---
 atankdd=(html.Div(dcc.Dropdown(id='tanka-my-dropdown', multi=True, options=[{'label':'1A Aluminium Content', 'value':'1A-Al'}, {'label':'1A Phosphate Content', 'value':'1A-Phosphate %'}, {'label':'1A Free Acidity', 'value':'1A-FA'}, {'label':'1A Total Acidity', 'value':'1A-TA'}, {'label':'1A Fluoride', 'value':'1A-Fluoride'}])),html.Button(id='tanka-my-button', n_clicks=0, children='Show Selection'), html.Div(dcc.Graph(id="tanka-graph-output", figure={})))
 btankdd=(html.Div(dcc.Dropdown(id='tankb-my-dropdown', multi=True, options=[{'label':'1B Aluminium Content', 'value':'1B-Al'}, {'label':'1B Phosphate Content', 'value':'1B-Phosphate %'}, {'label':'1B Free Acidity', 'value':'1B-FA'}, {'label':'1B Total Acidity', 'value':'1B-TA'}, {'label':'1B Fluoride', 'value':'1B-Fluoride'}])),html.Button(id='tankb-my-button', n_clicks=0, children='Show Selection'), html.Div(dcc.Graph(id="tankb-graph-output", figure={})))
+dose = (html.Div([dcc.DatePickerRange(id='table-date-range', calendar_orientation='horizontal',day_size=39,end_date_placeholder_text="Return", with_portal=False, first_day_of_week=0, reopen_calendar_on_clear=True, is_RTL=False, number_of_months_shown=1, min_date_allowed=dt(2020, 1, 1),max_date_allowed=dt(2022, 6, 20), start_date=dt(2020, 8, 7).date(),end_date=dt(2022, 5, 15).date(), display_format='MMM Do, YY',month_format='MMMM, YYYY', minimum_nights=2, persistence=True, persisted_props=['start_date'],persistence_type='session', updatemode='singledate'), html.H3("Sidewalk Café Licenses and Applications", style={'textAlign': 'center'}), dash_table.DataTable(id='dosetable')]))
+
 
 #----- play ----
 dosing=(html.Div(dcc.Dropdown(id='dose-my-dropdown', multi=True, options=[{'label':x, 'value':x} for x in sorted(dosing_data.Chemical.unique())], value=["HF 1A", "HF 1B", "PHOS 1A", "PHOS 1B"])),html.Button(id='dose-my-button', n_clicks=0, children='Show Selection'), html.Div(dcc.Graph(id="dose-graph-output", figure={})))
@@ -279,6 +290,8 @@ SIDEBAR_STYLE = {
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
 }
+
+
 
 # the styles for the main content position it to the right of the sidebar and
 # add some padding.
@@ -297,7 +310,7 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-
+		
                 dbc.NavLink("Chemical Overview", href="/page-1", active="exact"),
                 dbc.NavLink("Environmental", href="/page-2", active="exact"),
                 dbc.NavLink("Chemical Stock", href="/page-3", active="exact"),
@@ -321,24 +334,24 @@ app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 def render_page_content(pathname):
     if pathname == "/page-1":
         return html.Div([dcc.Tabs([
-        dcc.Tab(label='Tank 1A', children=[html.Div([CA_button, ATankbutton, tank_temps]), html.Div(aff), html.Div(cw),html.Div(dbc.Row([dbc.Col(A_fluoride_average), dbc.Col(A_phosphate_average), dbc.Col(A_temp_average)]), style={'padding': 20, 'flex': 1}), dbc.Row([dbc.Col(html.Div(atankdd)), dbc.Col(html.Div([html.H4('1A Latest Chemical Analysis', style={'padding':50, 'fontSize':20}), html.Div(A_table, style={'padding':50}), html.H4(children="Current Batch: 123.\n  Current basket: 149", style={'padding':50, 'textAlign':'center', 'fontSize':15, 'whitespace':'pre'})]))]), html.H4(children='Temperature Probe Comparison'), html.Div(dcc.Dropdown(id='atemp-my-dropdown', multi=True, options=[{'label':'Temperature: Infrared', 'value':'Infrared T (⁰C)'}, {'label':'Temperature: Thermocouple', 'value':'Thermocouple T (⁰C)'}])), html.Button(id='atemp-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="atemp-graph-output", figure={})), html.Div([html.H4(children='Dig out Dates', style={'fontSize':20, 'size':'sm'}),digoutstable])]),
-        dcc.Tab(label='Tank 1B', children=[html.Div([CA_button, BTankbutton, tank_temps]), html.Div(bff), html.Div(cw),html.Div(dbc.Row([dbc.Col(B_fluoride_average), dbc.Col(B_phosphate_average), dbc.Col(B_temp_average)]), style={'padding': 20, 'flex': 1}), dbc.Row([dbc.Col(html.Div(btankdd)), dbc.Col(html.Div([html.H4('1B Latest Chemical Analysis', style={'padding':50, 'fontSize':20}), html.Div(B_table, style={'padding':50}), html.H4(children="Current Batch: 123.\n  Current basket: 149", style={'padding':50, 'textAlign':'center', 'fontSize':15})]))]), html.H4(children='Temperature Probe Comparison'), html.Div(dcc.Dropdown(id='btemp-my-dropdown', multi=True, options=[{'label':'Temperature: Infrared', 'value':'Infrared T (⁰C)'}, {'label':'Temperature: Thermocouple', 'value':'Thermocouple T (⁰C)'}])), html.Button(id='btemp-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="btemp-graph-output", figure={})), html.Div([html.H4(children='Dig out Dates', style={'fontSize':20, 'size':'sm'}),digoutstable])]),
-		dcc.Tab(label='General Chemical Information', children=[dbc.Row([dbc.Col(html.H4(children="Testing Schedule.\n \n   Current testing schedule increased as a result of the recent flash fires.\n \n   See below for a description of test methods used for analysis.", style={'padding':50, 'fontSize':15, 'white-space':'pre'})), dbc.Col(html.Table(cas_table, style={'textAlign':'center', 'fontSize':13, 'size':'sm', 'marginLeft': 'auto', 'marginRight': 'auto'}))]), html.Div(dcc.Dropdown(id='a-my-dropdown', multi=True, options=[{'label':'1A Aluminium Content', 'value':'1A-Al'}, {'label':'1A Phosphate Content', 'value':'1A-Phosphate %'}, {'label':'1A Free Acidity', 'value':'1A-FA'}, {'label':'1A Total Acidity', 'value':'1A-TA'}, {'label':'1A Fluoride', 'value':'1A-Fluoride'}, {'label':'1B Aluminium Content', 'value':'1B-Al'}, {'label':'1B Phosphate Content', 'value':'1B-Phosphate %'}, {'label':'1B Free Acidity', 'value':'1B-FA'}, {'label':'1B Total Acidity', 'value':'1B-TA'}, {'label':'1B Fluoride Content', 'value':'1B-Fluoride'}, {'label':'Desmut Total Acidity', 'value':'DS-TA'}, {'label':'Pre-Treatment Total Acidity', 'value':'PT-TA'}, {'label':'Pre-Treatment Free Acidity', 'value':'PT-FA'}, {'label':'Pre-Treatment Aluminium Content', 'value':'PT-Al'}, {'label':'Common Rinse pH', 'value':'CR-pH'}, {'label':'Final Rinse pH', 'value':'FR-pH'}])),
-		html.Button(id='a-my-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="a-graph-output", figure={})),
+        dcc.Tab(label='Tank 1A', children=[html.Div([CA_button, ATankbutton, tank_temps]), html.Div(aff), html.Div(cw),html.Div(dbc.Row([dbc.Col(A_fluoride_average), dbc.Col(A_phosphate_average), dbc.Col(A_temp_average)]), style={'padding': 20, 'flex': 1}), dbc.Row([dbc.Col(html.Div(atankdd)), dbc.Col(html.Div([html.H4('1A Latest Chemical Analysis', style={'padding':50, 'fontSize':20}), html.Div(A_table, style={'padding':50}), html.H4(children="Current Batch: 123.\n  Current basket: 149", style={'padding':50, 'textAlign':'center', 'fontSize':15, 'whitespace':'pre'})]))]), html.H4(children='Temperature Probe Comparison'), html.Div(dcc.Dropdown(id='atemp-my-dropdown', multi=True, options=[{'label':'Temperature: Infrared', 'value':'Infrared T (⁰C)'}, {'label':'Temperature: Thermocouple', 'value':'Thermocouple T (⁰C)'}])), html.Button(id='atemp-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="atemp-graph-output", figure={})), html.Div([html.H4(children='Dig out Dates', style={'fontSize':20, 'size':'sm'}),digoutstable])]), 
+        dcc.Tab(label='Tank 1B', children=[html.Div([CA_button, BTankbutton, tank_temps]), html.Div(bff), html.Div(cw),html.Div(dbc.Row([dbc.Col(B_fluoride_average), dbc.Col(B_phosphate_average), dbc.Col(B_temp_average)]), style={'padding': 20, 'flex': 1}), dbc.Row([dbc.Col(html.Div(btankdd)), dbc.Col(html.Div([html.H4('1B Latest Chemical Analysis', style={'padding':50, 'fontSize':20}), html.Div(B_table, style={'padding':50}), html.H4(children="Current Batch: 123.\n  Current basket: 149", style={'padding':50, 'textAlign':'center', 'fontSize':15})]))]), html.H4(children='Temperature Probe Comparison'), html.Div(dcc.Dropdown(id='btemp-my-dropdown', multi=True, options=[{'label':'Temperature: Infrared', 'value':'Infrared T (⁰C)'}, {'label':'Temperature: Thermocouple', 'value':'Thermocouple T (⁰C)'}])), html.Button(id='btemp-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="btemp-graph-output", figure={})), html.Div([html.H4(children='Dig out Dates', style={'fontSize':20, 'size':'sm'}),digoutstable])]), 
+		dcc.Tab(label='General Chemical Information', children=[dbc.Row([dbc.Col(html.H4(children="Testing Schedule.\n \n   Current testing schedule increased as a result of the recent flash fires.\n \n   See below for a description of test methods used for analysis.", style={'padding':50, 'fontSize':15, 'white-space':'pre'})), dbc.Col(html.Table(cas_table, style={'padding':50, 'textAlign':'center', 'fontSize':13, 'size':'sm', 'marginLeft': 'auto', 'marginRight': 'auto'}), style={'padding':50})]), html.Div(dcc.Dropdown(id='a-my-dropdown', multi=True, options=[{'label':'1A Aluminium Content', 'value':'1A-Al'}, {'label':'1A Phosphate Content', 'value':'1A-Phosphate %'}, {'label':'1A Free Acidity', 'value':'1A-FA'}, {'label':'1A Total Acidity', 'value':'1A-TA'}, {'label':'1A Fluoride', 'value':'1A-Fluoride'}, {'label':'1B Aluminium Content', 'value':'1B-Al'}, {'label':'1B Phosphate Content', 'value':'1B-Phosphate %'}, {'label':'1B Free Acidity', 'value':'1B-FA'}, {'label':'1B Total Acidity', 'value':'1B-TA'}, {'label':'1B Fluoride Content', 'value':'1B-Fluoride'}, {'label':'Desmut Total Acidity', 'value':'DS-TA'}, {'label':'Pre-Treatment Total Acidity', 'value':'PT-TA'}, {'label':'Pre-Treatment Free Acidity', 'value':'PT-FA'}, {'label':'Pre-Treatment Aluminium Content', 'value':'PT-Al'}, {'label':'Common Rinse pH', 'value':'CR-pH'}, {'label':'Final Rinse pH', 'value':'FR-pH'}])),  
+		html.Button(id='a-my-button', n_clicks=0, children='Show Breakdown'), html.Div(dcc.Graph(id="a-graph-output", figure={})), 
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(faas_image), style={'padding':30, 'textAlign': 'center', 'height':'50%', 'width':'50%'}))), dbc.Col(html.Div([faas0, faas1, faas2, faas3], style={'padding':30}))]),
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(phosv_image), style={'padding':30, 'textAlign': 'center', 'height':'50%', 'width':'50%'}))), dbc.Col(html.Div([phos0, phos1, phos2, phos3], style={'padding':30}))]),
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(lg_image), style={'padding':30, 'textAlign': 'center','height':'50%', 'width':'50%'}))), dbc.Col(html.Div([fluor0, fluor1, fluor2, fluor3], style={'padding':30}))]),
 		html.H4(children="Latest Results Tank A", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(A_table),html.H4(children="Latest Results Tank B", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}),  html.Div(B_table), html.H4(children="Latest Results Desmut", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(DS_table), html.H4(children="Latest Results Pre-Treatment", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(PT_table), html.H4(children="Latest Results Common Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(CR_table), html.H4(children="Latest Results Final Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(FR_table),dbc.Row([dbc.Col(html.Div(apanel_button))]), dbc.Row([dbc.Col(html.Div(CA_Card)), dbc.Col(html.Div(Tank_Card)), dbc.Col(html.Div(Graphs_Card))])])])])
-
+     
     elif pathname == "/page-2":
         return html.H1(children="Waste Water Results", style={'fontSize': 30}), html.Div(dbc.Row([dbc.Col(html.Div(WW_button)), dbc.Col(html.Div(ww_data_button))])), html.Div(html.Img(src='data:image/png;base64,{}'.format(waste_image), style={'height':'50%', 'width':'50%'}), style={'textAlign':'center'}), html.H2(children='Anglian Water Test Results', style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(ww_table, style={'size':'sm', 'fontSize':15}),html.H2(children='Internal Test Results', style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(dbc.Row([dbc.Col(html.Div(dcc.Graph(id='plotww', figure=figww1))), dbc.Col(html.Div(dcc.Graph(id='plotww', figure=figww2)))]))
-
+     
     elif pathname == "/page-3":
-        return html.H1(children="Chemical Stock", style={'fontSize':30, 'padding':30}), html.Div(stocktable), html.H4(children= "Weekly and monthly dosing data", style={'textSize':20, 'textAlign': 'center'}), dbc.Row([dbc.Col(html.Div(dosing)), dbc.Col(html.Div(cumdosing))])
+        return html.H1(children="Chemical Stock", style={'fontSize':30, 'padding':30}), html.H4(children="Last 80 Dose Summation: "), html.Div(dbc.Table.from_dataframe(hfsum)), html.H4(children= "Daily Dosing Data", style={'textSize':20, 'textAlign': 'center'}), dbc.Row([dbc.Col(html.Div(dosing)), dbc.Col(html.Div(cumdosing))])
     # If the user tries to reach a different page, return a 404 message
     elif pathname == "/page-4":
         return html.H1(children="Equiptment in Use", style={'fontSize':30}), html.Div(html.Img(src='data:image/png;base64,{}'.format(encoded_image), style={'height':'50%', 'width':'50%'}),style={'textAlign':'center'}), html.H4(children="Temperature Probes", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(tanktemp_table), html.H4(children="*Note: 4-6 spares on site to be recorded", style={'textAlign': 'left', 'color': 'grey', 'fontSize': 10}), html.H4(children="pH Probes", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(ph_table), html.H4(children="*Note: 7 spares on site to be recorded", style={'textAlign': 'left', 'color': 'grey', 'fontSize': 10})
-    # If the user tries to reach a different page, return a 404 message
+    # If the user tries to reach a different page, return a 404 message 
     return dbc.Jumbotron(
         [html.Div(html.Img(src='data:image/png;base64,{}'.format(ec_image))),
             html.H1("404: Not found", className="text-danger"),
@@ -360,8 +373,8 @@ def update_my_graph(n_clicks, val_chosen):
 def update_my_graph(n_clicks, val_chosen):
 	dff=dfhist
 	fig=px.scatter(dff, x="Date", y=val_chosen)
-	return fig
-
+	return fig	
+	
 #--- temperature readings graph----
 @app.callback(Output(component_id='btemp-graph-output', component_property='figure'), [Input(component_id='btemp-button', component_property='n_clicks'), State(component_id='btemp-my-dropdown', component_property='value')])
 
@@ -385,42 +398,55 @@ def update_my_graph(n_clicks, val_chosen):
 	dff=dfhist
 	fig=px.bar(dff, x="Date", y=val_chosen, barmode="group")
 	return fig
-
+	
 #---Phosphate calculation------
 @app.callback(
     Output('phosphateA', 'children'),
     Input('num-multia', 'value'))
 def callback_a(x):
     return round(((2571-((x*0.08635)/100)*67675.44)/12.0849),2)
-
+	
 @app.callback(
     Output('phosphateB', 'children'),
     Input('num-multib', 'value'))
 def callback_a(x):
-    return roubt(((5510-((x*0.08635)/100)*145018.8)/12.0849),2)
+    return round(((5510-((x*0.08635)/100)*145018.8)/12.0849),2)
 #-------------------------------
 
 #----chemical stock functions----
 
 @app.callback(
-	Output(component_id='dose-graph-output', component_property='figure'),
+	Output(component_id='dose-graph-output', component_property='figure'), 
 	[Input(component_id='dose-my-dropdown', component_property='value')])
 def update_test_graph(val_chosen):
 	df_dose=dosing_data.tail(60)
 	dff_dose=df_dose[df_dose["Chemical"]. isin(val_chosen)]
 	fig=px.bar(dff_dose, x="Date", y="Target Dose (L)", color="Chemical", barmode='group')
 	return fig
-
+	
 @app.callback(
-	Output(component_id='cum-graph-output', component_property='figure'),
+	Output(component_id='cum-graph-output', component_property='figure'), 
 	[Input(component_id='cum-my-dropdown', component_property='value')])
 def update_test_graph(val_chosen):
 	df_dose=dosing_data.tail(80)
 	dff_dose=df_dose[df_dose["Chemical"]. isin(val_chosen)]
 	fig=px.ecdf(dff_dose, x="Date", y="Target Dose (L)", color="Chemical", marginal="histogram", ecdfnorm=None)
 	return fig
+	
+	
 
-
+@app.callback(
+    Output('dosetable', 'data'),
+    [Input('table-date-range', 'start_date'),
+     Input('table-date-range', 'end_date')]
+)
+def update_output(start_date, end_date):
+    dff = dosing_data.loc[start_date:end_date]
+    dosetab=(dff.groupby(['Chemical']).sum().groupby(level=[0]).cumsum().reset_index())
+   # dosetab=dosetab.to_json(orient="records")
+   # parsed = json.loads(dosetab)
+   # dosetab=json.dumps(parsed, indent=4)
+    return dosetab.to_dict('records')
 #---------- email -------
 #port = 465
 #password=input("Kob14458")
@@ -430,6 +456,6 @@ def update_test_graph(val_chosen):
 #	server.login("my@cellbond.com", password)
 # https://realpython.com/python-send-email/#including-html-content
 
-
+	
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True)    
