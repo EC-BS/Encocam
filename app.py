@@ -24,7 +24,23 @@ app.config.suppress_callback_exceptions=True
 #VALID_USERNAME_PASSWORD_PAIRS = {'hello': 'world'}
 #auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
 
+#-------------Github collated data-----------------
+#https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx
+#df = pd.read_csv("https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Dash%20Components/Dropdown/Urban_Park_Ranger_Animal_Condition.csv")  
+# Replace all datasheets with github repository.
 
+refca='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refbtank='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refatank='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refww='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refdosing='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refdigouts='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+reftanktemp='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+aw_test_ref= 'https://www.ukas.com/wp-content/uploads/schedule_uploads/00002/1223Testing-Multiple.pdf'
+ww_data_logging='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+apanel='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+
+'''
 #------------Excel sheet locations for links------------------------
 refca='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EUkeZ_PoVTBPqwK_simA2JABRU2--u8NTzchhqz_WQL3OQ?e=zhk5U5'
 refbtank='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EVF9chUVCklDtLkyQf61h0gBvDhBa7Qih881EqR7DmMV2w?e=N7GxHH'
@@ -33,41 +49,31 @@ refww='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_
 refdosing='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EY5PCMPWgmFCio0WNKDh7x8BOgelA-3tafRXUxBG1YgSrg?e=fIYdZg'
 refdigouts='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EUxAzNqbLctMo-t1R0fKgcQBUHrZifutOtkFnyCFJp5WxA?e=zMbgNH'
 reftanktemp='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/ETfEmZh7Q9lFljigwfuSZ8IBMBYpLOMj7CyRWyhy0P_YlA?e=tGfGZQ'
-test_graphs_pdb= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EZUHiHUHuQlFhpA4qgJVU74BJvMvuhe_UjB7KouUyZmxrw?e=Zskj5E'
-test_graphs_2= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EQyqcoib6xdBh1-gcWzwFBcBnJwtWYr2c8nCoSySetQ8ew?e=CLk56Q'
-test_graphs_13= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EYdQnJgfKnJAtypnfjxs7bEBJ78L5kJ8ZlYTyN3VRjKlZA?e=Qh4fZF'
-test_graphs_56= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EYb_NbH_poBHt5lfGqE5dP0B3O26czwlqnQPJ8FQb31fbw?e=XROiCl'
-test_graphs_4= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/Ec6JEJBOHeRAhb5q7VK7cm8B4MiST4niKGf_KU2ViazqaQ?e=HbSqDr'
-test_graphs_ac= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EXbT0hq0mn5CgN8Fa2Xik-IBob__GbzEl7M0urWm0S7o6A?e=I3HlKx'
-test_graphs_df= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EdN3J64k9bRBvcLohbrhM8IBcgrpYXLfFCsYCz1XicpDOQ?e=hLjqIW'
-test_graphs_e= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EbJljiIC-eZJh_pe6fyiX00BespKpfN_ZOZbNOOxiYw23A?e=5eJDcu'
-test_graphs_b= 'https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EaLleWqxFI9BkUoSGeHsdJ0BFm4E7uWrXdhkXIdBukrUYw?e=s1x5Kl'
 aw_test_ref= 'https://www.ukas.com/wp-content/uploads/schedule_uploads/00002/1223Testing-Multiple.pdf'
 ww_data_logging='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EdcqKqssMZxLpwEcWVklZYkBwLjFZtiatc9T2S1QM01kvQ?e=pZPbTr'
 apanel='https://encocam-my.sharepoint.com/:x:/g/personal/nadine_symonds_cellbond_com/EZy-VJ4irLFKju8x1ow6LeEBPw2_fhB-GLQxDqdw6XlDQQ?e=vp6045'
-
+'''
 
 #----------------------Alerts--------------------------
 Linkalert=dbc.Alert(["alert test", html.A("example", href=refca , className="alert-link")])
 
 #--------------------------- Bulk data inputs - excel sheets-----------------------
 header_list= ["Date", "FR-TA", "FR-pH", "CR-TA", "CR-pH", "1A-FA", "1A-TA", "1A-Al", "1A-Phosphate (ppm)", "1A-Phosphate %", "1A-Fluoride", "1B-FA", "1B-TA", "1B-Al", "1B-Phosphate (ppm)", "1B-Phosphate %", "1B-Fluoride", "DS-TA", "DS-%V", "N104-FA", "N104-TA", "N104-Al"]
-df = pd.read_csv(r'H:\Forms\CA - Chemical Analysis/Archive/F-CA-001 Chemical Analysis Results test.csv', skiprows=1, encoding = 'latin1', delimiter=',', names=header_list, na_values = ['no info', ','])
+df = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Chemical_Analysis', skiprows=1, names=header_list, na_values = ['no info', ','])
 Date = pd.DatetimeIndex(df.Date).strftime("%Y-%m-%d")
 header_1a= ['Batch','Basket','Notes','Weight after','Qty','Authorised by', 'Date','Tank','Quantity','Barrier type','Element type','Core type','Block number','Pre-etch number', 'Prep works order','Etch works order','Final test number','Test number 1','Test number 2','Test number 3','Test number 4','Test number 5','Test number 6','Full dip 1 (min)','Program 1','Others 1','Full dip 2 (min)','Program 2','Others 2','Full dip 3 (min)','Program 3','Others 3','Full dip 4 (min)','Program 4','Others 4','Full dip 5 (min)','Program 5','Others 5','Full dip 6 (min)','Program 6','Others 6','Required crush strength','Average crush strength','Etch program','Weight before', 'Weight difference', 'PASS AFTER FAIL','Temperature','Fluoride','Addition 1','Fluoride 2','Addition 2','Fluoride 3','DX5100 addition','DX5100 addition 2','Water     top-up','Ultrasonic','Skins','Comments']
-df1atank = pd.read_excel(r'H:\Forms\ET - Etch Bay\F-ET-28 Tank 1A Records.xlsm', sheet_name='HISTORIC', header=[0], na_values = ['no info', ','])
-df1btank = pd.read_excel(r'H:\Forms\ET - Etch Bay\F-ET-29 Tank 1B Records.xlsm', sheet_name='HISTORIC', header=[0], na_values = ['no info', ','])
+df1atank = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_1A', header=[0], na_values = ['no info', ','])
+df1btank = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_1B', header=[0], na_values = ['no info', ','])
 header_ww=['a', 'b','c','d','e','tss']
-dfww = pd.read_csv(r'H:\Environment\Waste\Anglian Water\tss.csv', encoding='latin1', delimiter=',', names=header_ww, na_values=['no info', ','])
+dfww = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Waste_Water', names=header_ww, na_values=['no info', ','])
 header_do=["Date", "Operator", "Tank", "Rinse Tank", "Company", "Trigger number", "Response Time", "Dig out Hours", "Number of Drums", "Baskets since previous digouts", "Measured from top", "1a-added phosphoric acid", "1a-added hf", "1b added phosphoric", "1B-added hf", "comments"]
 #dfdigout=pd.read_excel(r'H:\Forms\ET - Etch Bay\F-ET-35 Dig-out information.xlsx',sheet_name='Historic', names=header_do, header=[0], na_values=['no info', ','])
 #df["Date"]=(df["Date"], '%d%m%Y')
-wwdf=pd.read_excel(r'C:\Users\nadines\Documents\Python\test\layout\waste_water.xlsx', header=[0], na_values=['no_info', ','])
+wwdf=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Waste_Water', header=[0], na_values=['no_info', ','])
 stock_headers=['Part','Description 1','Description 2','Description 3','UoM','UoO','Purchasing Lead Time','Assembly Lead Time','Prime Supplier','Supplier Part','Material Cost']
 stock_data= pd.read_csv(r'C:\Users\nadines\Documents\Python\test\layout\stock.csv', delimiter=',', names=stock_headers)
-tanktemp_data=pd.read_excel(r'H:\Forms\ET - Etch Bay\F-ET-34 Checking Infrared sensor temperature.xlsm', sheet_name='Historic', header=[0], na_values=['no info',','])
-dosing_data=pd.read_excel(r'H:\Production\Etch Bay\Datalogging\DOSING\Chemical Dosing MASTER copy.xlsx', sheet_name='Raw data', header=[0])
-test=pd.read_csv('test.csv', header=[0])
+tanktemp_data=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_Temperature', header=[0], na_values=['no info',','])
+dosing_data=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Dosing', header=[0])
 
 
 #------------Data Blocks------------------------------
@@ -77,10 +83,6 @@ dfds = [df, "DS-TA", "DS-%V"]
 df104 = [df, "N104-FA", "N104-TA", "N104-Al"]
 dfcr = [df, "CR-TA", "CR-pH"]
 dffr = [df, "FR-TA", "FR-pH"]
-
-cf = pd.read_csv("https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Berlin_crimes.csv")
-cf = cf.groupby('District')[['Street_robbery', 'Drugs']].median()
-ef= pd.read_csv("https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Callbacks/Basic%20Callback/Mutual-Funds.csv")
 
 dig_outs = pd.DataFrame({"Date": ["15 Mar 2022", "19 Apr 2022", "24 May 2022", "28 June 2022", "12 Jul 2022", "02 Aug 2022", "06 Sep 2022", "11 Oct 2022", "15 Nov 2022", "20 Dec 2022"],"Tank": ["1A", "1A", "1A", "1A", "1B", "1A", "1A", "1A", "1A", "1A"],},)
 
@@ -257,7 +259,6 @@ lg_image = base64.b64encode(open(lg_pic, 'rb').read()).decode('ascii')
 Home=(dbc.CardImg(src="https://www.encocam.com/wp-content/themes/encocam/img/logos/encocam.svg", top=True), dbc.CardBody([html.H4("Encocam Data", className="card-title"), html.P("Encocam data collection and production information hub.", className="card-text")], style={"width": "18rem"}))
 CA_Card=(dbc.CardBody([html.H4("Chemical Anaysis", className="card-title", style={'font-size':'20px'}), html.H6("F-CA-0001", className="card-subtitle"), html.P("On site chemical analysis. Editable Document.", className="card-test"), dbc.CardLink("F-01-001", href=refca)]))
 Tank_Card=(dbc.CardBody([html.H4("Tank Records", className="card-title", style={'font-size':'20px'}), html.H6("F-ET-28, F-ET-29", className="card-subtitle"), html.P("Live updated tank records. No Editing available.", className="card-test"), dbc.CardLink("1A Tank Records", href=refatank), dbc.CardLink("1B Tank Records", href=refbtank)], ))
-Graphs_Card=(dbc.CardBody([html.H4("Automated Graphs Generation", className="card-title", style={'font-size':'20px'}), dbc.CardLink("PDB", href=test_graphs_pdb), dbc.CardLink("2's", href=test_graphs_2), dbc.CardLink("1's & 2's", href=test_graphs_13), dbc.CardLink("5's & 's", href=test_graphs_56), dbc.CardLink("4's", href=test_graphs_4), dbc.CardLink("A & C", href=test_graphs_ac), dbc.CardLink("D & F", href=test_graphs_df), dbc.CardLink("E", href=test_graphs_e), dbc.CardLink("B", href=test_graphs_b)]))
 A_fluoride_average= dbc.Card([dbc.CardHeader("Target Value: 1000ppm"), dbc.CardBody([html.H4("Current Weekly Average: 1111ppm"), html.P("Standard deviation: 198ppm")]),], style={"width":"18rem"})
 A_phosphate_average = dbc.Card([dbc.CardHeader("Target Value: 3.8%"), dbc.CardBody([html.H4("Current Weekly Average: 3.5%"), html.P("Standard deviation: 0.48")])], style={"width":"18rem"})
 A_temp_average = dbc.Card([dbc.CardHeader("Target Value: 42 \u00B0C"), dbc.CardBody([html.H4("Current Weekly Average: 42.5 \u00B0C"), html.P("Standard deviation: 1.6 \u00B0C"),])], style={"width":"18rem"},)
@@ -341,7 +342,7 @@ def render_page_content(pathname):
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(faas_image), style={'padding':30, 'textAlign': 'center', 'height':'50%', 'width':'50%'}))), dbc.Col(html.Div([faas0, faas1, faas2, faas3], style={'padding':30}))]),
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(phosv_image), style={'padding':30, 'textAlign': 'center', 'height':'50%', 'width':'50%'}))), dbc.Col(html.Div([phos0, phos1, phos2, phos3], style={'padding':30}))]),
 		dbc.Row([dbc.Col(html.Div(html.Img(src='data:image/png;base64,{}'.format(lg_image), style={'padding':30, 'textAlign': 'center','height':'50%', 'width':'50%'}))), dbc.Col(html.Div([fluor0, fluor1, fluor2, fluor3], style={'padding':30}))]),
-		html.H4(children="Latest Results Tank A", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(A_table),html.H4(children="Latest Results Tank B", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}),  html.Div(B_table), html.H4(children="Latest Results Desmut", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(DS_table), html.H4(children="Latest Results Pre-Treatment", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(PT_table), html.H4(children="Latest Results Common Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(CR_table), html.H4(children="Latest Results Final Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(FR_table),dbc.Row([dbc.Col(html.Div(apanel_button))]), dbc.Row([dbc.Col(html.Div(CA_Card)), dbc.Col(html.Div(Tank_Card)), dbc.Col(html.Div(Graphs_Card))])])])])
+		html.H4(children="Latest Results Tank A", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(A_table),html.H4(children="Latest Results Tank B", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}),  html.Div(B_table), html.H4(children="Latest Results Desmut", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(DS_table), html.H4(children="Latest Results Pre-Treatment", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(PT_table), html.H4(children="Latest Results Common Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(CR_table), html.H4(children="Latest Results Final Rinse", style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(FR_table),dbc.Row([dbc.Col(html.Div(apanel_button))]), dbc.Row([dbc.Col(html.Div(CA_Card)), dbc.Col(html.Div(Tank_Card))])])])])
      
     elif pathname == "/page-2":
         return html.H1(children="Waste Water Results", style={'fontSize': 30}), html.Div(dbc.Row([dbc.Col(html.Div(WW_button)), dbc.Col(html.Div(ww_data_button))])), html.Div(html.Img(src='data:image/png;base64,{}'.format(waste_image), style={'height':'50%', 'width':'50%'}), style={'textAlign':'center'}), html.H2(children='Anglian Water Test Results', style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(ww_table, style={'size':'sm', 'fontSize':15}),html.H2(children='Internal Test Results', style={'textAlign': 'center', 'color': 'blue', 'fontSize': 20}), html.Div(dbc.Row([dbc.Col(html.Div(dcc.Graph(id='plotww', figure=figww1))), dbc.Col(html.Div(dcc.Graph(id='plotww', figure=figww2)))]))
