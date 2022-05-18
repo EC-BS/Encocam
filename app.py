@@ -25,20 +25,20 @@ app.config.suppress_callback_exceptions=True
 #auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
 
 #-------------Github collated data-----------------
-#https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx
+#App_data.xlsx
 #df = pd.read_csv("https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Dash%20Components/Dropdown/Urban_Park_Ranger_Animal_Condition.csv")  
 # Replace all datasheets with github repository.
 
-refca='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-refbtank='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-refatank='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-refww='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-refdosing='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-refdigouts='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-reftanktemp='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+refca='App_data.xlsx'
+refbtank='App_data.xlsx'
+refatank='App_data.xlsx'
+refww='App_data.xlsx'
+refdosing='App_data.xlsx'
+refdigouts='App_data.xlsx'
+reftanktemp='App_data.xlsx'
 aw_test_ref= 'https://www.ukas.com/wp-content/uploads/schedule_uploads/00002/1223Testing-Multiple.pdf'
-ww_data_logging='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
-apanel='https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx'
+ww_data_logging='App_data.xlsx'
+apanel='App_data.xlsx'
 
 '''
 #------------Excel sheet locations for links------------------------
@@ -59,21 +59,21 @@ Linkalert=dbc.Alert(["alert test", html.A("example", href=refca , className="ale
 
 #--------------------------- Bulk data inputs - excel sheets-----------------------
 header_list= ["Date", "FR-TA", "FR-pH", "CR-TA", "CR-pH", "1A-FA", "1A-TA", "1A-Al", "1A-Phosphate (ppm)", "1A-Phosphate %", "1A-Fluoride", "1B-FA", "1B-TA", "1B-Al", "1B-Phosphate (ppm)", "1B-Phosphate %", "1B-Fluoride", "DS-TA", "DS-%V", "N104-FA", "N104-TA", "N104-Al"]
-df = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Chemical_Analysis', skiprows=1, names=header_list, na_values = ['no info', ','])
+df = pd.read_excel('App_data.xlsx', sheet_name='Chemical_Analysis', skiprows=1, names=header_list, na_values = ['no info', ','])
 Date = pd.DatetimeIndex(df.Date).strftime("%Y-%m-%d")
 header_1a= ['Batch','Basket','Notes','Weight after','Qty','Authorised by', 'Date','Tank','Quantity','Barrier type','Element type','Core type','Block number','Pre-etch number', 'Prep works order','Etch works order','Final test number','Test number 1','Test number 2','Test number 3','Test number 4','Test number 5','Test number 6','Full dip 1 (min)','Program 1','Others 1','Full dip 2 (min)','Program 2','Others 2','Full dip 3 (min)','Program 3','Others 3','Full dip 4 (min)','Program 4','Others 4','Full dip 5 (min)','Program 5','Others 5','Full dip 6 (min)','Program 6','Others 6','Required crush strength','Average crush strength','Etch program','Weight before', 'Weight difference', 'PASS AFTER FAIL','Temperature','Fluoride','Addition 1','Fluoride 2','Addition 2','Fluoride 3','DX5100 addition','DX5100 addition 2','Water     top-up','Ultrasonic','Skins','Comments']
-df1atank = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_1A', header=[0], na_values = ['no info', ','])
-df1btank = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_1B', header=[0], na_values = ['no info', ','])
+df1atank = pd.read_excel('App_data.xlsx', sheet_name='Tank_1A', header=[0], na_values = ['no info', ','])
+df1btank = pd.read_excel('App_data.xlsx', sheet_name='Tank_1B', header=[0], na_values = ['no info', ','])
 header_ww=['a', 'b','c','d','e','tss']
-dfww = pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Waste_Water', names=header_ww, na_values=['no info', ','])
+dfww = pd.read_excel('App_data.xlsx', sheet_name='Waste_Water', names=header_ww, na_values=['no info', ','])
 header_do=["Date", "Operator", "Tank", "Rinse Tank", "Company", "Trigger number", "Response Time", "Dig out Hours", "Number of Drums", "Baskets since previous digouts", "Measured from top", "1a-added phosphoric acid", "1a-added hf", "1b added phosphoric", "1B-added hf", "comments"]
 #dfdigout=pd.read_excel(r'H:\Forms\ET - Etch Bay\F-ET-35 Dig-out information.xlsx',sheet_name='Historic', names=header_do, header=[0], na_values=['no info', ','])
 #df["Date"]=(df["Date"], '%d%m%Y')
-wwdf=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Waste_Water', header=[0], na_values=['no_info', ','])
+wwdf=pd.read_excel('App_data.xlsx', sheet_name='Waste_Water', header=[0], na_values=['no_info', ','])
 stock_headers=['Part','Description 1','Description 2','Description 3','UoM','UoO','Purchasing Lead Time','Assembly Lead Time','Prime Supplier','Supplier Part','Material Cost']
 stock_data= pd.read_csv(r'C:\Users\nadines\Documents\Python\test\layout\stock.csv', delimiter=',', names=stock_headers)
-tanktemp_data=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Tank_Temperature', header=[0], na_values=['no info',','])
-dosing_data=pd.read_excel('https://github.com/EC-BS/Encocam/blob/main/App_data.xlsx', sheet_name='Dosing', header=[0])
+tanktemp_data=pd.read_excel('App_data.xlsx', sheet_name='Tank_Temperature', header=[0], na_values=['no info',','])
+dosing_data=pd.read_excel('App_data.xlsx', sheet_name='Dosing', header=[0])
 
 
 #------------Data Blocks------------------------------
